@@ -9,7 +9,7 @@ class Config implements Parcelable {
     private int pointsToWin;
 
     Config() {
-        timerLength = 60000;
+        timerLength = 6000;
         timerInterval = 1000;
         pointsToWin = 10;
     }
