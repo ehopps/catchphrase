@@ -112,7 +112,7 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
     }
 
     public void buttonEnd(View view) { // TODO: make the end button visibly different (red maybe?)
-        timer.cancel();
+        onEnd();
     }
 
     public void buttonSkip(View view) {
@@ -127,14 +127,16 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
     }
 
     public void buttonExit(View view) {
-
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     void showStartScreen() {
-        timerView.setVisibility(View.VISIBLE);
+        timerView.setVisibility(View.INVISIBLE);
         wordView.setVisibility(View.INVISIBLE);
         correctButton.setVisibility(View.INVISIBLE);
-        endButton.setVisibility(View.INVISIBLE);
+        endButton.setVisibility(View.VISIBLE);
         skipButton.setVisibility(View.INVISIBLE);
         startButton.setVisibility(View.VISIBLE);
         newButton.setVisibility(View.INVISIBLE);
@@ -163,20 +165,27 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         exitButton.setVisibility(View.VISIBLE);
     }
 
+    void onEnd() {
+        // TODO: show something celebratory
+        // TODO: think through this (and the listener callbacks) more in general
+        timer.cancel();
+        showWinScreen();
+    }
+
     void highlightActiveTeam(int activeTeam) {
         switch(activeTeam) {
             case 1: { // TODO: adapt this to whatever theme you end up using
                 scoreView1.setTextColor(Color.RED);
                 teamView1.setTextColor(Color.RED);
-                scoreView2.setTextColor(Color.BLACK);
-                teamView2.setTextColor(Color.BLACK);
+                scoreView2.setTextColor(Color.WHITE); // TODO: use theme default text color
+                teamView2.setTextColor(Color.WHITE);
                 break;
             }
             case 2: {
                 scoreView2.setTextColor(Color.RED);
                 teamView2.setTextColor(Color.RED);
-                scoreView1.setTextColor(Color.BLACK);
-                teamView1.setTextColor(Color.BLACK);
+                scoreView1.setTextColor(Color.WHITE);
+                teamView1.setTextColor(Color.WHITE);
                 break;
             }
         }
@@ -194,12 +203,12 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
 
     @Override
     public void onWin1() {
-        showWinScreen();
+        onEnd();
     }
 
     @Override
     public void onWin2() {
-        showWinScreen();
+        onEnd();
     }
 
     // TODO: when Scoreboard says a team wins, maybe celebrate then exit to MainActivity

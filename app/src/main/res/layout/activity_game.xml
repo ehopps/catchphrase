@@ -76,7 +76,7 @@
         android:layout_marginBottom="32dp"
         android:gravity="center"
         android:textAlignment="center"
-        android:textSize="36sp"
+        android:textSize="64sp"
         app:layout_constraintBottom_toTopOf="@+id/button_correct"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
