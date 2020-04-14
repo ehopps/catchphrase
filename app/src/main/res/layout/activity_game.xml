@@ -6,30 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
+    <nl.dionsegijn.konfetti.KonfettiView
+        android:id="@+id/konfetti_spout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <Button
         android:id="@+id/button_correct"
         android:visibility="invisible"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
+        android:layout_width="200dp"
+        android:layout_height="75dp"
         android:background="@drawable/neon_button_primary"
         android:textColor="@drawable/neon_button_text_primary"
         android:layout_marginBottom="16dp"
         android:onClick="buttonCorrect"
         android:text="@string/string_correct"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/button_end"
+        app:layout_constraintEnd_toStartOf="@id/button_endround"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button_end"
+        android:id="@+id/button_endround"
         android:visibility="invisible"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
+        android:layout_width="200dp"
+        android:layout_height="75dp"
         android:background="@drawable/neon_button_highlight"
         android:textColor="@drawable/neon_button_text_highlight"
         android:layout_marginBottom="16dp"
-        android:onClick="buttonEnd"
-        android:text="@string/string_end"
+        android:onClick="buttonEndRound"
+        android:text="@string/string_endround"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_skip"
+        app:layout_constraintStart_toEndOf="@id/button_correct" />
+
+    <Button
+        android:id="@+id/button_endgame"
+        android:visibility="invisible"
+        android:layout_width="200dp"
+        android:layout_height="75dp"
+        android:background="@drawable/neon_button_highlight"
+        android:textColor="@drawable/neon_button_text_highlight"
+        android:layout_marginBottom="16dp"
+        android:onClick="buttonEndGame"
+        android:text="@string/string_endgame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/button_skip"
         app:layout_constraintStart_toEndOf="@id/button_correct" />
@@ -37,8 +56,8 @@
     <Button
         android:id="@+id/button_skip"
         android:visibility="invisible"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
+        android:layout_width="200dp"
+        android:layout_height="75dp"
         android:background="@drawable/neon_button_primary"
         android:textColor="@drawable/neon_button_text_primary"
         android:layout_marginBottom="16dp"
@@ -46,35 +65,37 @@
         android:text="@string/string_skip"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button_end" />
+        app:layout_constraintStart_toEndOf="@id/button_endround" />
 
     <Button
         android:id="@+id/button_new"
-        android:visibility="invisible"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:background="@drawable/neon_button_highlight"
-        android:textColor="@drawable/neon_button_text_highlight"
+        android:layout_width="250dp"
+        android:layout_height="75dp"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/neon_button_highlight"
         android:onClick="buttonNew"
         android:text="@string/string_new"
+        android:textColor="@drawable/neon_button_text_highlight"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/button_exit"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_timer" />
 
     <Button
         android:id="@+id/button_exit"
-        android:visibility="invisible"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:background="@drawable/neon_button_accent"
-        android:textColor="@drawable/neon_button_text_accent"
+        android:layout_width="250dp"
+        android:layout_height="75dp"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/neon_button_accent"
         android:onClick="buttonExit"
         android:text="@string/string_exit"
+        android:textColor="@drawable/neon_button_text_accent"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button_new" />
+        app:layout_constraintStart_toEndOf="@id/button_new"
+        app:layout_constraintTop_toBottomOf="@+id/text_timer" />
 
     <TextView
         android:id="@+id/text_word"
@@ -159,6 +180,8 @@
         android:id="@+id/button_start"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@drawable/neon_button_primary"
+        android:textColor="@drawable/neon_button_text_primary"
         android:onClick="buttonStart"
         android:text="@string/string_start"
         android:textSize="36sp"

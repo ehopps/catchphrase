@@ -2,7 +2,8 @@
     <string name="app_name">Catchphrase</string>
     <string name="string_start">Start</string>
     <string name="string_correct">Correct!</string>
-    <string name="string_end">End round</string>
+    <string name="string_endround">End round</string>
+    <string name="string_endgame">End game</string>
     <string name="string_skip">Skip</string>
     <string name="string_new">New game</string>
     <string name="string_exit">Back to menu</string>

@@ -14,6 +14,10 @@ import android.widget.TextView;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
+
 public class GameActivity extends AppCompatActivity implements Scoreboard.ScoreboardListener {
     private static final String TAG = "GameActivity";
 
@@ -31,12 +35,15 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
     TextView teamView2;
     Button startButton;
     Button correctButton;
-    Button endButton;
+    Button endRoundButton;
+    Button endGameButton;
     Button skipButton;
     Button newButton;
     Button exitButton;
 
     int textColor;
+    int primaryColor;
+    int highlightColor;
     int accentColor;
 
     @Override
@@ -53,7 +60,8 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         teamView2 = findViewById(R.id.text_team2);
         startButton = findViewById(R.id.button_start);
         correctButton = findViewById(R.id.button_correct);
-        endButton = findViewById(R.id.button_end);
+        endRoundButton = findViewById(R.id.button_endround);
+        endGameButton = findViewById(R.id.button_endgame);
         skipButton = findViewById(R.id.button_skip);
         newButton = findViewById(R.id.button_new);
         exitButton = findViewById(R.id.button_exit);
@@ -61,10 +69,14 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         // retrieve resources
         if (android.os.Build.VERSION.SDK_INT < 23) {
             textColor = getResources().getColor(R.color.colorText);
+            primaryColor = getResources().getColor(R.color.colorPrimary);
+            highlightColor = getResources().getColor(R.color.colorHighlight);
             accentColor = getResources().getColor(R.color.colorAccent);
         }
         else {
             textColor = getResources().getColor(R.color.colorText, null);
+            primaryColor = getResources().getColor(R.color.colorPrimary, null);
+            highlightColor = getResources().getColor(R.color.colorHighlight, null);
             accentColor = getResources().getColor(R.color.colorAccent, null);
         }
 
@@ -96,7 +108,7 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
             @Override
             public void onFinish() {
                 // hide correct and skip buttons; show start button
-                showStartScreen();
+                showBreakScreen();
 
                 // end round in the scoreboard
                 scoreboard.endRound();
@@ -111,9 +123,6 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         // hide start button; show timer, correct button, and skip button
         showGameScreen();
 
-        // highlight active team
-        highlightActiveTeam(scoreboard.getActiveTeam());
-
         // reset and start timer
         timer.start();
     }
@@ -124,7 +133,13 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         wordView.setText(word);
     }
 
-    public void buttonEnd(View view) { // TODO: make the end button visibly different (red maybe?)
+    public void buttonEndRound(View view) { // TODO: need separate End Round and End Game buttons
+        showBreakScreen();
+        scoreboard.endRound();
+        timer.cancel();
+    }
+
+    public void buttonEndGame(View view) {
         onEnd();
     }
 
@@ -149,37 +164,63 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         timerView.setVisibility(View.INVISIBLE);
         wordView.setVisibility(View.INVISIBLE);
         correctButton.setVisibility(View.INVISIBLE);
-        endButton.setVisibility(View.VISIBLE);
+        endRoundButton.setVisibility(View.INVISIBLE);
+        endGameButton.setVisibility(View.INVISIBLE);
         skipButton.setVisibility(View.INVISIBLE);
         startButton.setVisibility(View.VISIBLE);
         newButton.setVisibility(View.INVISIBLE);
         exitButton.setVisibility(View.INVISIBLE);
+
+        // unhighlight teams
+        unhighlightActiveTeam();
+    }
+
+    void showBreakScreen() {
+        timerView.setVisibility(View.INVISIBLE);
+        wordView.setVisibility(View.INVISIBLE);
+        correctButton.setVisibility(View.INVISIBLE);
+        endRoundButton.setVisibility(View.INVISIBLE);
+        endGameButton.setVisibility(View.VISIBLE);
+        skipButton.setVisibility(View.INVISIBLE);
+        startButton.setVisibility(View.VISIBLE);
+        newButton.setVisibility(View.INVISIBLE);
+        exitButton.setVisibility(View.INVISIBLE);
+
+        // unhighlight teams
+        unhighlightActiveTeam();
     }
 
     void showGameScreen() {
         timerView.setVisibility(View.VISIBLE);
         wordView.setVisibility(View.VISIBLE);
         correctButton.setVisibility(View.VISIBLE);
-        endButton.setVisibility(View.VISIBLE);
+        endRoundButton.setVisibility(View.VISIBLE);
+        endGameButton.setVisibility(View.INVISIBLE);
         skipButton.setVisibility(View.VISIBLE);
         startButton.setVisibility(View.INVISIBLE);
         newButton.setVisibility(View.INVISIBLE);
         exitButton.setVisibility(View.INVISIBLE);
+
+        // highlight active team
+        highlightActiveTeam(scoreboard.getActiveTeam());
     }
 
     void showWinScreen() {
         timerView.setVisibility(View.INVISIBLE);
         wordView.setVisibility(View.INVISIBLE);
         correctButton.setVisibility(View.GONE);
-        endButton.setVisibility(View.GONE);
+        endRoundButton.setVisibility(View.GONE);
+        endGameButton.setVisibility(View.GONE);
         skipButton.setVisibility(View.GONE);
         startButton.setVisibility(View.GONE);
         newButton.setVisibility(View.VISIBLE);
         exitButton.setVisibility(View.VISIBLE);
+
+        // unhighlight teams
+        unhighlightActiveTeam();
     }
 
     void onEnd() {
-        // TODO: show something celebratory
         // TODO: think through this (and the listener callbacks) more in general
         timer.cancel();
         showWinScreen();
@@ -187,7 +228,7 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
 
     void highlightActiveTeam(int activeTeam) {
         switch(activeTeam) {
-            case 1: { // TODO: adapt this to whatever theme you end up using
+            case 1: {
                 scoreView1.setTextColor(accentColor);
                 teamView1.setTextColor(accentColor);
                 scoreView2.setTextColor(textColor);
@@ -204,6 +245,13 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         }
     }
 
+    void unhighlightActiveTeam() {
+        scoreView1.setTextColor(textColor);
+        teamView1.setTextColor(textColor);
+        scoreView2.setTextColor(textColor);
+        teamView2.setTextColor(textColor);
+    }
+
     @Override
     public void onScoreChange1(int score) {
         scoreView1.setText(String.format(Locale.getDefault(), "%d", score));
@@ -215,15 +263,44 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
     }
 
     @Override
-    public void onWin1() {
+    public void onWin() {
+        KonfettiView konfettiSpout = findViewById(R.id.konfetti_spout);
+
+        int winningTeam = scoreboard.getWinningTeam();
+        highlightActiveTeam(winningTeam); // TODO: highlight differently here?
+
+        double directionMin, directionMax;
+        float position;
+
+        switch(winningTeam) {
+            case 2: {
+                directionMin = 190.0;
+                directionMax = 240.0;
+                position = konfettiSpout.getWidth() + 100;
+                break;
+            }
+            case 1:
+            default: {
+                directionMin = 300.0;
+                directionMax = 350.0;
+                position = -100f;
+                break;
+            }
+        }
+
+        konfettiSpout.build()
+                .addColors(primaryColor, highlightColor, accentColor)
+                .setDirection(directionMin, directionMax)
+                .setSpeed(1f, 35f)
+                .setFadeOutEnabled(true)
+                .setTimeToLive(5000L)
+                .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
+                .addSizes(new Size(12, 5))
+                .setPosition(position, position, 450f, 480f)
+                .streamFor(5000, 10L);
+
         onEnd();
     }
-
-    @Override
-    public void onWin2() {
-        onEnd();
-    }
-
-    // TODO: when Scoreboard says a team wins, maybe celebrate then exit to MainActivity
-    // TODO: on win, ask to start new game or exit to main
 }
+
+// TODO: add sounds (ticking, buzzer, congratulations)

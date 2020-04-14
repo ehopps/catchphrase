@@ -6,8 +6,7 @@ class Scoreboard {
     interface ScoreboardListener {
         void onScoreChange1(int score);
         void onScoreChange2(int score);
-        void onWin1();
-        void onWin2();
+        void onWin();
     }
 
     private int team1;
@@ -54,7 +53,7 @@ class Scoreboard {
 
         // check if team has won
         if (team1 >= pointsToWin) {
-            listener.onWin1();
+            listener.onWin();
         }
     }
 
@@ -65,7 +64,19 @@ class Scoreboard {
 
         // check if team has won
         if (team2 >= pointsToWin) {
-            listener.onWin2();
+            listener.onWin();
+        }
+    }
+
+    int getWinningTeam() {
+        if (team1 > team2) {
+            return 1;
+        }
+        else if (team2 > team1) {
+            return 2;
+        }
+        else {
+            return 0;
         }
     }
 
