@@ -61,3 +61,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
+
+// TODO: add support for different categories

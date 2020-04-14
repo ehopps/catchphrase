@@ -36,6 +36,9 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
     Button newButton;
     Button exitButton;
 
+    int textColor;
+    int accentColor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +57,16 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         skipButton = findViewById(R.id.button_skip);
         newButton = findViewById(R.id.button_new);
         exitButton = findViewById(R.id.button_exit);
+
+        // retrieve resources
+        if (android.os.Build.VERSION.SDK_INT < 23) {
+            textColor = getResources().getColor(R.color.colorText);
+            accentColor = getResources().getColor(R.color.colorAccent);
+        }
+        else {
+            textColor = getResources().getColor(R.color.colorText, null);
+            accentColor = getResources().getColor(R.color.colorAccent, null);
+        }
 
         // get intent
         Intent intent = getIntent();
@@ -175,17 +188,17 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
     void highlightActiveTeam(int activeTeam) {
         switch(activeTeam) {
             case 1: { // TODO: adapt this to whatever theme you end up using
-                scoreView1.setTextColor(Color.RED);
-                teamView1.setTextColor(Color.RED);
-                scoreView2.setTextColor(Color.WHITE); // TODO: use theme default text color
-                teamView2.setTextColor(Color.WHITE);
+                scoreView1.setTextColor(accentColor);
+                teamView1.setTextColor(accentColor);
+                scoreView2.setTextColor(textColor);
+                teamView2.setTextColor(textColor);
                 break;
             }
             case 2: {
-                scoreView2.setTextColor(Color.RED);
-                teamView2.setTextColor(Color.RED);
-                scoreView1.setTextColor(Color.WHITE);
-                teamView1.setTextColor(Color.WHITE);
+                scoreView2.setTextColor(accentColor);
+                teamView2.setTextColor(accentColor);
+                scoreView1.setTextColor(textColor);
+                teamView1.setTextColor(textColor);
                 break;
             }
         }

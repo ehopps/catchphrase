@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:state_pressed="false">
+        <layer-list
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp">
+            <item
+                android:top="10dp"
+                android:left="10dp"
+                android:bottom="0dp"
+                android:right="0dp">
+                <shape android:gravity="right|end">
+                    <solid
+                        android:color="@color/colorBackground" />
+                    <stroke
+                        android:width="5dp"
+                        android:color="@color/colorPrimary" />
+                    <corners
+                        android:radius="20dp" />
+                    <padding
+                        android:left="0dp"
+                        android:top="0dp"
+                        android:right="0dp"
+                        android:bottom="0dp" />
+                </shape>
+            </item>
+            <item
+                android:top="0dp"
+                android:left="0dp"
+                android:bottom="10dp"
+                android:right="10dp">
+                <shape android:gravity="center">
+                    <solid
+                        android:color="@color/colorBackground" />
+                    <stroke
+                        android:width="5dp"
+                        android:color="@color/colorPrimary" />
+                    <corners
+                        android:radius="20dp" />
+                    <padding
+                        android:left="10dp"
+                        android:top="10dp"
+                        android:right="10dp"
+                        android:bottom="10dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_pressed="true">
+        <layer-list
+            android:paddingRight="-20dp"
+            android:paddingBottom="-20dp" >
+            <item
+                android:top="10dp"
+                android:left="10dp"
+                android:bottom="0dp"
+                android:right="0dp">
+                <shape android:gravity="right|end">
+                    <solid
+                        android:color="@color/colorBackground" />
+                    <stroke
+                        android:width="5dp"
+                        android:color="@color/colorPrimaryDark" />
+                    <corners
+                        android:radius="20dp" />
+                    <padding
+                        android:left="0dp"
+                        android:top="0dp"
+                        android:right="0dp"
+                        android:bottom="0dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+</selector>
