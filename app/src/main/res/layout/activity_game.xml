@@ -148,6 +148,7 @@
     <TextView
         android:id="@+id/text_score1"
         android:visibility="invisible"
+        android:background="@android:color/transparent"
         android:layout_width="64dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -162,6 +163,7 @@
     <TextView
         android:id="@+id/text_score2"
         android:visibility="invisible"
+        android:background="@android:color/transparent"
         android:layout_width="64dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -175,6 +177,7 @@
     <TextView
         android:id="@+id/text_team1"
         android:visibility="invisible"
+        android:background="@android:color/transparent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -188,6 +191,7 @@
     <TextView
         android:id="@+id/text_team2"
         android:visibility="invisible"
+        android:background="@android:color/transparent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"

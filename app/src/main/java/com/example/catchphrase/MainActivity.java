@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-
         config = new Config();
 
         try {
@@ -50,17 +49,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startEasy(View view) {
-        Log.d(TAG, "Starting in easy mode.");
         startGameActivity(WordList.Difficulty.EASY);
     }
 
     public void startMedium(View view) {
-        Log.d(TAG, "Starting in medium mode.");
         startGameActivity(WordList.Difficulty.MEDIUM);
     }
 
     public void startHard(View view) {
-        Log.d(TAG, "Starting in hard mode.");
         startGameActivity(WordList.Difficulty.HARD);
     }
 

@@ -21,14 +21,13 @@ import nl.dionsegijn.konfetti.models.Size;
 public class GameActivity extends AppCompatActivity implements Scoreboard.ScoreboardListener {
     private static final String TAG = "GameActivity";
 
-    View decorView;
-
     WordList words;
     WordList.Difficulty difficulty;
     CountDownTimer timer;
     Scoreboard scoreboard;
     Config config;
 
+    View decorView;
     TextView wordView;
     TextView timerView;
     TextView scoreView1;
@@ -53,46 +52,10 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        decorView = getWindow().getDecorView();
-        decorView.setOnSystemUiVisibilityChangeListener
-            (new View.OnSystemUiVisibilityChangeListener() {
-                @Override
-                public void onSystemUiVisibilityChange(int visibility) {
-                    if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-                        decorView.setSystemUiVisibility(uiOptions);
-                    }
-                }
-            });
-
-        // find all views
-        wordView = findViewById(R.id.text_word);
-        timerView = findViewById(R.id.text_timer);
-        scoreView1 = findViewById(R.id.text_score1);
-        scoreView2 = findViewById(R.id.text_score2);
-        teamView1 = findViewById(R.id.text_team1);
-        teamView2 = findViewById(R.id.text_team2);
-        startButton = findViewById(R.id.button_start);
-        correctButton = findViewById(R.id.button_correct);
-        endRoundButton = findViewById(R.id.button_endround);
-        endGameButton = findViewById(R.id.button_endgame);
-        skipButton = findViewById(R.id.button_skip);
-        newButton = findViewById(R.id.button_new);
-        exitButton = findViewById(R.id.button_exit);
-
-        // retrieve resources
-        if (android.os.Build.VERSION.SDK_INT < 23) {
-            textColor = getResources().getColor(R.color.colorText);
-            primaryColor = getResources().getColor(R.color.colorPrimary);
-            highlightColor = getResources().getColor(R.color.colorHighlight);
-            accentColor = getResources().getColor(R.color.colorAccent);
-        }
-        else {
-            textColor = getResources().getColor(R.color.colorText, null);
-            primaryColor = getResources().getColor(R.color.colorPrimary, null);
-            highlightColor = getResources().getColor(R.color.colorHighlight, null);
-            accentColor = getResources().getColor(R.color.colorAccent, null);
-        }
+        // set up view
+        findAllViews();
+        hideStatusBar();
+        getColors();
 
         // get intent
         Intent intent = getIntent();
@@ -109,6 +72,55 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         scoreboard = new Scoreboard(this, config.getPointsToWin());
 
         // set up timer
+        timerInit();
+    }
+
+    private void findAllViews() {
+        decorView = getWindow().getDecorView();
+        wordView = findViewById(R.id.text_word);
+        timerView = findViewById(R.id.text_timer);
+        scoreView1 = findViewById(R.id.text_score1);
+        scoreView2 = findViewById(R.id.text_score2);
+        teamView1 = findViewById(R.id.text_team1);
+        teamView2 = findViewById(R.id.text_team2);
+        startButton = findViewById(R.id.button_start);
+        correctButton = findViewById(R.id.button_correct);
+        endRoundButton = findViewById(R.id.button_endround);
+        endGameButton = findViewById(R.id.button_endgame);
+        skipButton = findViewById(R.id.button_skip);
+        newButton = findViewById(R.id.button_new);
+        exitButton = findViewById(R.id.button_exit);
+    }
+
+    private void hideStatusBar() {
+        decorView.setOnSystemUiVisibilityChangeListener
+                (new View.OnSystemUiVisibilityChangeListener() {
+                    @Override
+                    public void onSystemUiVisibilityChange(int visibility) {
+                        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+                            decorView.setSystemUiVisibility(uiOptions);
+                        }
+                    }
+                });
+    }
+
+    private void getColors() {
+        if (android.os.Build.VERSION.SDK_INT < 23) {
+            textColor = getResources().getColor(R.color.colorText);
+            primaryColor = getResources().getColor(R.color.colorPrimary);
+            highlightColor = getResources().getColor(R.color.colorHighlight);
+            accentColor = getResources().getColor(R.color.colorAccent);
+        }
+        else {
+            textColor = getResources().getColor(R.color.colorText, null);
+            primaryColor = getResources().getColor(R.color.colorPrimary, null);
+            highlightColor = getResources().getColor(R.color.colorHighlight, null);
+            accentColor = getResources().getColor(R.color.colorAccent, null);
+        }
+    }
+
+    private void timerInit() {
         timer = new CountDownTimer(config.getTimerLength(), config.getTimerInterval()) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -248,7 +260,6 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
     }
 
     void onEnd() {
-        // TODO: think through this (and the listener callbacks) more in general
         timer.cancel();
         showWinScreen();
     }

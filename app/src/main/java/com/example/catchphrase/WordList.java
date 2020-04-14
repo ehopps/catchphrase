@@ -36,7 +36,7 @@ class WordList implements Parcelable {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(filestream))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] tokens = line.split("\t");
+                String[] tokens = line.split(",");
                 switch(tokens[1]) {
                     case "e": {
                         easy.add(tokens[0]);
