@@ -184,6 +184,10 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         startButton.setVisibility(View.VISIBLE);
         newButton.setVisibility(View.INVISIBLE);
         exitButton.setVisibility(View.INVISIBLE);
+        scoreView1.setVisibility(View.INVISIBLE);
+        scoreView2.setVisibility(View.INVISIBLE);
+        teamView1.setVisibility(View.INVISIBLE);
+        teamView2.setVisibility(View.INVISIBLE);
 
         // unhighlight teams
         unhighlightActiveTeam();
@@ -199,6 +203,10 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         startButton.setVisibility(View.INVISIBLE);
         newButton.setVisibility(View.INVISIBLE);
         exitButton.setVisibility(View.INVISIBLE);
+        scoreView1.setVisibility(View.VISIBLE);
+        scoreView2.setVisibility(View.VISIBLE);
+        teamView1.setVisibility(View.VISIBLE);
+        teamView2.setVisibility(View.VISIBLE);
 
         // highlight active team
         highlightActiveTeam(scoreboard.getActiveTeam());
@@ -214,6 +222,10 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         startButton.setVisibility(View.VISIBLE);
         newButton.setVisibility(View.INVISIBLE);
         exitButton.setVisibility(View.INVISIBLE);
+        scoreView1.setVisibility(View.VISIBLE);
+        scoreView2.setVisibility(View.VISIBLE);
+        teamView1.setVisibility(View.VISIBLE);
+        teamView2.setVisibility(View.VISIBLE);
 
         // unhighlight teams
         unhighlightActiveTeam();
@@ -229,6 +241,10 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         startButton.setVisibility(View.GONE);
         newButton.setVisibility(View.VISIBLE);
         exitButton.setVisibility(View.VISIBLE);
+        scoreView1.setVisibility(View.VISIBLE);
+        scoreView2.setVisibility(View.VISIBLE);
+        teamView1.setVisibility(View.VISIBLE);
+        teamView2.setVisibility(View.VISIBLE);
     }
 
     void onEnd() {
@@ -316,8 +332,6 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
     public void onResume() {
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
-//        ActionBar actionBar = getActionBar(); // TODO: if action bar shows, hide it
-//        actionBar.hide();
         super.onResume();
     }
 }

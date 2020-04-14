@@ -75,12 +75,11 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
-//        ActionBar actionBar = getActionBar(); // TODO: if action bar shows, hide it
-//        actionBar.hide();
         super.onResume();
     }
 }
 
 
 
-// TODO: add support for different categories
+// TODO: add support for different categories of words (sports, movies, etc.)
+// TODO: fix toast styling (dark mode?)

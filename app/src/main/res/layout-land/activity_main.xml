@@ -18,8 +18,8 @@
 
     <Button
         android:id="@+id/button_easy"
-        android:layout_width="128dp"
-        android:layout_height="64dp"
+        android:layout_width="150dp"
+        android:layout_height="75dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/neon_button_primary"
         android:onClick="startEasy"
@@ -32,8 +32,8 @@
 
     <Button
         android:id="@+id/button_medium"
-        android:layout_width="128dp"
-        android:layout_height="64dp"
+        android:layout_width="150dp"
+        android:layout_height="75dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/neon_button_highlight"
         android:onClick="startMedium"
@@ -47,8 +47,8 @@
 
     <Button
         android:id="@+id/button_hard"
-        android:layout_width="128dp"
-        android:layout_height="64dp"
+        android:layout_width="150dp"
+        android:layout_height="75dp"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/neon_button_accent"
