@@ -26,19 +26,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         decorView = getWindow().getDecorView();
-        decorView.setOnSystemUiVisibilityChangeListener
-            (new View.OnSystemUiVisibilityChangeListener() {
-                @Override
-                public void onSystemUiVisibilityChange(int visibility) {
-                    if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-                        decorView.setSystemUiVisibility(uiOptions);
-                    }
-                }
-            });
+        hideStatusBar();
 
+        // initialize app settings and sounds
+        GameSounds.init(this);
         config = new Config();
 
+        // load word list
         try {
             InputStream wordStream = this.getResources().openRawResource(R.raw.biblewords);
             words = new WordList(wordStream); // TODO: find a better way to do this?
@@ -48,15 +42,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void hideStatusBar() {
+        decorView.setOnSystemUiVisibilityChangeListener
+                (new View.OnSystemUiVisibilityChangeListener() {
+                    @Override
+                    public void onSystemUiVisibilityChange(int visibility) {
+                        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+                            decorView.setSystemUiVisibility(uiOptions);
+                        }
+                    }
+                });
+    }
+
     public void startEasy(View view) {
+        GameSounds.button();
         startGameActivity(WordList.Difficulty.EASY);
     }
 
     public void startMedium(View view) {
+        GameSounds.button();
         startGameActivity(WordList.Difficulty.MEDIUM);
     }
 
     public void startHard(View view) {
+        GameSounds.button();
         startGameActivity(WordList.Difficulty.HARD);
     }
 
@@ -73,9 +83,12 @@ public class MainActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(uiOptions);
         super.onResume();
     }
+
+    public void onDestroy() {
+        GameSounds.deInit();
+        super.onDestroy();
+    }
 }
-
-
 
 // TODO: add support for different categories of words (sports, movies, etc.)
 // TODO: fix toast styling (dark mode?)

@@ -16,7 +16,7 @@
                         android:color="@color/colorBackground" />
                     <stroke
                         android:width="5dp"
-                        android:color="@color/colorAccent" />
+                        android:color="@color/colorAccentDark" />
                     <corners
                         android:radius="20dp" />
                     <padding

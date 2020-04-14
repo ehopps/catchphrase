@@ -68,8 +68,9 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         difficulty = (WordList.Difficulty) intent.getSerializableExtra(MainActivity.GAME_MODE);
         words.startGame(difficulty);
 
-        // set up scoreboard
+        // set up scoreboard and sounds
         scoreboard = new Scoreboard(this, config.getPointsToWin());
+        GameSounds.init(this);
 
         // set up timer
         timerInit();
@@ -143,6 +144,7 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
     }
 
     public void buttonStart(View view) {
+        GameSounds.button();
         String word = words.getWord();
         wordView.setText(word);
 
@@ -154,33 +156,39 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
     }
 
     public void buttonCorrect(View view) {
+        GameSounds.button();
         scoreboard.addPoint();
         String word = words.getWord();
         wordView.setText(word);
     }
 
-    public void buttonEndRound(View view) { // TODO: need separate End Round and End Game buttons
+    public void buttonEndRound(View view) {
+        GameSounds.button();
         showBreakScreen();
         scoreboard.endRound();
         timer.cancel();
     }
 
     public void buttonEndGame(View view) {
+        GameSounds.button();
         onEnd();
     }
 
     public void buttonSkip(View view) {
+        GameSounds.button();
         String word = words.getWord();
         wordView.setText(word);
     }
 
     public void buttonNew(View view) {
+        GameSounds.button();
         scoreboard.reset();
         words.startGame(difficulty);
         showStartScreen();
     }
 
     public void buttonExit(View view) {
+        GameSounds.button();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -302,10 +310,12 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
 
     @Override
     public void onWin() {
-        KonfettiView konfettiSpout = findViewById(R.id.konfetti_spout);
+        GameSounds.fanfare();
 
         int winningTeam = scoreboard.getWinningTeam();
         highlightActiveTeam(winningTeam); // TODO: highlight differently here?
+
+        KonfettiView konfettiSpout = findViewById(R.id.konfetti_spout);
 
         double directionMin, directionMax;
         float position;
