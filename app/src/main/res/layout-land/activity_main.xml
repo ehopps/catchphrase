@@ -7,14 +7,12 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/logo"
         android:layout_width="341dp"
         android:layout_height="240dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@id/button_easy"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_medium"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
 
@@ -22,42 +20,45 @@
         android:id="@+id/button_easy"
         android:layout_width="128dp"
         android:layout_height="64dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/neon_button_primary"
-        android:textColor="@drawable/neon_button_text_primary"
         android:onClick="startEasy"
         android:text="@string/string_easy"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@drawable/neon_button_text_primary"
+        app:layout_constraintBottom_toTopOf="@id/button_medium"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/logo"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button_medium"
         android:layout_width="128dp"
         android:layout_height="64dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/neon_button_highlight"
-        android:textColor="@drawable/neon_button_text_highlight"
         android:onClick="startMedium"
         android:text="@string/string_medium"
+        android:textColor="@drawable/neon_button_text_highlight"
         app:layout_constraintBottom_toTopOf="@+id/button_hard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/logo"
         app:layout_constraintTop_toBottomOf="@+id/button_easy" />
 
     <Button
         android:id="@+id/button_hard"
         android:layout_width="128dp"
         android:layout_height="64dp"
-        android:background="@drawable/neon_button_accent"
-        android:textColor="@drawable/neon_button_text_accent"
+        android:layout_marginStart="8dp"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/neon_button_accent"
         android:onClick="startHard"
         android:text="@string/string_hard"
+        android:textColor="@drawable/neon_button_text_accent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/logo"
         app:layout_constraintTop_toBottomOf="@+id/button_medium" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

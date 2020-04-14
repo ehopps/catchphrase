@@ -21,6 +21,8 @@ import nl.dionsegijn.konfetti.models.Size;
 public class GameActivity extends AppCompatActivity implements Scoreboard.ScoreboardListener {
     private static final String TAG = "GameActivity";
 
+    View decorView;
+
     WordList words;
     WordList.Difficulty difficulty;
     CountDownTimer timer;
@@ -50,6 +52,18 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        decorView = getWindow().getDecorView();
+        decorView.setOnSystemUiVisibilityChangeListener
+            (new View.OnSystemUiVisibilityChangeListener() {
+                @Override
+                public void onSystemUiVisibilityChange(int visibility) {
+                    if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+                        decorView.setSystemUiVisibility(uiOptions);
+                    }
+                }
+            });
 
         // find all views
         wordView = findViewById(R.id.text_word);
@@ -175,21 +189,6 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         unhighlightActiveTeam();
     }
 
-    void showBreakScreen() {
-        timerView.setVisibility(View.INVISIBLE);
-        wordView.setVisibility(View.INVISIBLE);
-        correctButton.setVisibility(View.INVISIBLE);
-        endRoundButton.setVisibility(View.INVISIBLE);
-        endGameButton.setVisibility(View.VISIBLE);
-        skipButton.setVisibility(View.INVISIBLE);
-        startButton.setVisibility(View.VISIBLE);
-        newButton.setVisibility(View.INVISIBLE);
-        exitButton.setVisibility(View.INVISIBLE);
-
-        // unhighlight teams
-        unhighlightActiveTeam();
-    }
-
     void showGameScreen() {
         timerView.setVisibility(View.VISIBLE);
         wordView.setVisibility(View.VISIBLE);
@@ -205,6 +204,21 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         highlightActiveTeam(scoreboard.getActiveTeam());
     }
 
+    void showBreakScreen() {
+        timerView.setVisibility(View.INVISIBLE);
+        wordView.setVisibility(View.INVISIBLE);
+        correctButton.setVisibility(View.INVISIBLE);
+        endRoundButton.setVisibility(View.INVISIBLE);
+        endGameButton.setVisibility(View.VISIBLE);
+        skipButton.setVisibility(View.INVISIBLE);
+        startButton.setVisibility(View.VISIBLE);
+        newButton.setVisibility(View.INVISIBLE);
+        exitButton.setVisibility(View.INVISIBLE);
+
+        // unhighlight teams
+        unhighlightActiveTeam();
+    }
+
     void showWinScreen() {
         timerView.setVisibility(View.INVISIBLE);
         wordView.setVisibility(View.INVISIBLE);
@@ -215,9 +229,6 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         startButton.setVisibility(View.GONE);
         newButton.setVisibility(View.VISIBLE);
         exitButton.setVisibility(View.VISIBLE);
-
-        // unhighlight teams
-        unhighlightActiveTeam();
     }
 
     void onEnd() {
@@ -300,6 +311,14 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
                 .streamFor(5000, 10L);
 
         onEnd();
+    }
+
+    public void onResume() {
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+//        ActionBar actionBar = getActionBar(); // TODO: if action bar shows, hide it
+//        actionBar.hide();
+        super.onResume();
     }
 }
 

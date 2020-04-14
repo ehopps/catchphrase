@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Catchphrase</string>
+    <string name="main_title">catch\nphrase</string>
     <string name="string_start">Start</string>
     <string name="string_correct">Correct!</string>
     <string name="string_endround">End round</string>

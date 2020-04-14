@@ -4,21 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import java.io.InputStream;
-
-import nl.dionsegijn.konfetti.KonfettiView;
-import nl.dionsegijn.konfetti.models.Shape;
-import nl.dionsegijn.konfetti.models.Size;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     public static final String CONFIG = "com.example.catchphrase.CONFIG";
     public static final String WORD_LIST = "com.example.catchphrase.WORD_LIST";
     public static final String GAME_MODE = "com.example.catchphrase.GAME_MODE";
+
+    View decorView;
 
     WordList words;
     Config config;
@@ -27,6 +24,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        decorView = getWindow().getDecorView();
+        decorView.setOnSystemUiVisibilityChangeListener
+            (new View.OnSystemUiVisibilityChangeListener() {
+                @Override
+                public void onSystemUiVisibilityChange(int visibility) {
+                    if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+                        decorView.setSystemUiVisibility(uiOptions);
+                    }
+                }
+            });
+
 
         config = new Config();
 
@@ -61,6 +71,16 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(GAME_MODE, difficulty);
         startActivity(intent);
     }
+
+    public void onResume() {
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+//        ActionBar actionBar = getActionBar(); // TODO: if action bar shows, hide it
+//        actionBar.hide();
+        super.onResume();
+    }
 }
+
+
 
 // TODO: add support for different categories
