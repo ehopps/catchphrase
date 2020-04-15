@@ -25,7 +25,6 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
     WordList.Difficulty difficulty;
     CountDownTimer timer;
     Scoreboard scoreboard;
-    Config config;
 
     View decorView;
     TextView wordView;
@@ -57,23 +56,18 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         hideStatusBar();
         getColors();
 
-        // get intent
-        Intent intent = getIntent();
-
-        // get config from intent
-        config = intent.getParcelableExtra(MainActivity.CONFIG);
-
         // get word list from intent and set it up
+        Intent intent = getIntent();
         words = intent.getParcelableExtra(MainActivity.WORD_LIST);
         difficulty = (WordList.Difficulty) intent.getSerializableExtra(MainActivity.GAME_MODE);
         words.startGame(difficulty);
 
         // set up scoreboard and sounds
-        scoreboard = new Scoreboard(this, config.getPointsToWin());
+        scoreboard = new Scoreboard(this, Config.getPointsToWin());
         GameSounds.init(this);
 
         // set up timer
-        timerInit();
+        timerSetup();
     }
 
     private void findAllViews() {
@@ -121,11 +115,22 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         }
     }
 
-    private void timerInit() {
-        timer = new CountDownTimer(config.getTimerLength(), config.getTimerInterval()) {
+    private void timerSetup() {
+        timer = new CountDownTimer(Config.getTimerLength(), Config.getTimerInterval()) {
+            boolean clockToggle = true;
+
             @Override
             public void onTick(long millisUntilFinished) {
-                // every tick, update the timer view
+                // play ticks and tocks when appropriate
+                if (!clockToggle && millisUntilFinished <= Config.getTimerWarning() + Config.getTimerInterval()) {
+                    GameSounds.tock();
+                }
+                else if (clockToggle) {
+                    GameSounds.tick();
+                }
+                clockToggle = !clockToggle;
+
+                // update the timer view
                 String time = String.format(Locale.getDefault(), "%02d:%02d",
                         TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished));
@@ -134,6 +139,8 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
 
             @Override
             public void onFinish() {
+                GameSounds.timeUp();
+
                 // hide correct and skip buttons; show start button
                 showBreakScreen();
 
@@ -156,7 +163,7 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
     }
 
     public void buttonCorrect(View view) {
-        GameSounds.button();
+        GameSounds.correct();
         scoreboard.addPoint();
         String word = words.getWord();
         wordView.setText(word);

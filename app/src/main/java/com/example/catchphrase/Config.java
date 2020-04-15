@@ -3,38 +3,54 @@ package com.example.catchphrase;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-class Config implements Parcelable {
-    private int timerLength; // TODO: set this up as a list of key-value pairs for easier attribute adding and parceling
-    private int timerInterval;
-    private int pointsToWin;
+class Config implements Parcelable { // TODO: get rid of Parcelable?
+    private static Config instance;
 
-    Config() {
+    private static int timerLength; // TODO: set this up as a list of key-value pairs for easier attribute adding and parceling
+    private static int timerInterval;
+    private static int timerWarning;
+    private static int pointsToWin;
+
+    private Config() {
         timerLength = 60000;
-        timerInterval = 1000;
+        timerInterval = 500;
+        timerWarning = 10000;
         pointsToWin = 10;
     }
 
-    void setTimerLength(int newLength) { // TODO: ensure all arguments are valid ints?
+    static void init() {
+        if (instance == null) instance = new Config();
+    }
+
+    static void setTimerLength(int newLength) { // TODO: ensure all arguments are valid ints?
         timerLength = newLength;
     }
 
-    void setPointsToWin(int newPoints) {
-        pointsToWin = newPoints;
-    }
-
-    void setTimerInterval(int newInterval) {
+    static void setTimerInterval(int newInterval) {
         timerInterval = newInterval;
     }
 
-    int getTimerLength() {
+    static void setTimerWarning(int newWarning) {
+        timerWarning = newWarning;
+    }
+
+    static void setPointsToWin(int newPoints) {
+        pointsToWin = newPoints;
+    }
+
+    static int getTimerLength() {
         return timerLength;
     }
 
-    int getTimerInterval() { // TODO: change number format for shorter intervals? e.g. show milliseconds
+    static int getTimerInterval() { // TODO: change number format for shorter intervals? e.g. show milliseconds
         return timerInterval;
     }
 
-    int getPointsToWin() {
+    static int getTimerWarning() { // TODO: change number format for shorter intervals? e.g. show milliseconds
+        return timerWarning;
+    }
+
+    static int getPointsToWin() {
         return pointsToWin;
     }
 

@@ -16,9 +16,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String GAME_MODE = "com.example.catchphrase.GAME_MODE";
 
     View decorView;
-
     WordList words;
-    Config config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         // initialize app settings and sounds
         GameSounds.init(this);
-        config = new Config();
+        Config.init();
 
         // load word list
         try {
@@ -72,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void startGameActivity(WordList.Difficulty difficulty) {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(CONFIG, config);
         intent.putExtra(WORD_LIST, words);
         intent.putExtra(GAME_MODE, difficulty);
         startActivity(intent);
@@ -90,5 +87,7 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
-// TODO: add support for different categories of words (sports, movies, etc.)
+// TODO: add support for different lists of words (sports, movies, etc.)
 // TODO: fix toast styling (dark mode?)
+// TODO: add Settings icon in one top corner and About icon in the other
+// TODO: when About is pressed, display info including attribution of sounds, etc.

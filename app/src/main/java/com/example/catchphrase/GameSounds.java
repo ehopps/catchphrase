@@ -15,9 +15,11 @@ class GameSounds {
     private static GameSounds instance;
     private static SoundPool pool;
 
-    private static int buttonPress;
-    private static int clockTick;
-    private static int clockTock;
+    private static int button;
+    private static int correct;
+    private static int tick;
+    private static int tock;
+    private static int timeUp;
     private static int fanfare;
 
     private GameSounds(Context context) {
@@ -38,11 +40,19 @@ class GameSounds {
 
         // load all sounds into SoundPool
         try (
-                AssetFileDescriptor button1File = context.getAssets().openFd("sounds/data/button1.mp3");
+                AssetFileDescriptor buttonFile = context.getAssets().openFd("sounds/data/button3.mp3");
+                AssetFileDescriptor correctFile = context.getAssets().openFd("sounds/data/correct2.mp3");
+                AssetFileDescriptor tickFile = context.getAssets().openFd("sounds/data/tick1.wav");
+                AssetFileDescriptor tockFile = context.getAssets().openFd("sounds/data/tock1.wav");
+                AssetFileDescriptor timeUpFile = context.getAssets().openFd("sounds/data/timer1.mp3");
                 AssetFileDescriptor fanfareFile = context.getAssets().openFd("sounds/data/success1.mp3");
                 )
         {
-            buttonPress = pool.load(button1File, 1);
+            button = pool.load(buttonFile, 1);
+            correct = pool.load(correctFile, 1);
+            tick = pool.load(tickFile, 1);
+            tock = pool.load(tockFile, 1);
+            timeUp = pool.load(timeUpFile, 1);
             fanfare = pool.load(fanfareFile, 1);
         }
         catch (IOException e) {
@@ -56,7 +66,43 @@ class GameSounds {
 
     static void button() {
         try {
-            pool.play(buttonPress, 1f, 1f, 1, 0, 1f);
+            pool.play(button, 1f, 1f, 1, 0, 1f);
+        }
+        catch (NullPointerException e) {
+            Log.e(TAG, "No SoundPool exists to play from.", e);
+        }
+    }
+
+    static void correct() {
+        try {
+            pool.play(correct, 1f, 1f, 1, 0, 1f);
+        }
+        catch (NullPointerException e) {
+            Log.e(TAG, "No SoundPool exists to play from.", e);
+        }
+    }
+
+    static void tick() {
+        try {
+            pool.play(tick, 1f, 1f, 1, 0, 1f);
+        }
+        catch (NullPointerException e) {
+            Log.e(TAG, "No SoundPool exists to play from.", e);
+        }
+    }
+
+    static void tock() {
+        try {
+            pool.play(tock, 1f, 1f, 1, 0, 1f);
+        }
+        catch (NullPointerException e) {
+            Log.e(TAG, "No SoundPool exists to play from.", e);
+        }
+    }
+
+    static void timeUp() {
+        try {
+            pool.play(timeUp, 1f, 1f, 1, 0, 1f);
         }
         catch (NullPointerException e) {
             Log.e(TAG, "No SoundPool exists to play from.", e);
