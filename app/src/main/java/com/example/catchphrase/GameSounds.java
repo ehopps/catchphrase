@@ -66,7 +66,7 @@ class GameSounds {
 
     static void button() {
         try {
-            pool.play(button, 1f, 1f, 1, 0, 1f);
+            pool.play(button, 0.75f, 0.75f, 1, 0, 1.25f);
         }
         catch (NullPointerException e) {
             Log.e(TAG, "No SoundPool exists to play from.", e);
@@ -75,7 +75,7 @@ class GameSounds {
 
     static void correct() {
         try {
-            pool.play(correct, 1f, 1f, 1, 0, 1f);
+            pool.play(correct, 1f, 1f, 1, 0, 1.25f);
         }
         catch (NullPointerException e) {
             Log.e(TAG, "No SoundPool exists to play from.", e);
@@ -84,7 +84,7 @@ class GameSounds {
 
     static void tick() {
         try {
-            pool.play(tick, 1f, 1f, 1, 0, 1f);
+            pool.play(tick, 1f, 1f, 1, 0, 1.1f);
         }
         catch (NullPointerException e) {
             Log.e(TAG, "No SoundPool exists to play from.", e);

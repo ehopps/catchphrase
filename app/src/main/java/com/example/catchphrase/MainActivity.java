@@ -53,6 +53,16 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    public void about(View view) {
+        // TODO: add functionality
+        Log.d(TAG, "Clicked About button.");
+    }
+
+    public void settings(View view) {
+        // TODO: add functionality
+        Log.d(TAG, "Clicked Settings button.");
+    }
+
     public void startEasy(View view) {
         GameSounds.button();
         startGameActivity(WordList.Difficulty.EASY);
