@@ -3,6 +3,7 @@ package com.example.catchphrase;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.InputStream;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -21,7 +23,6 @@ import nl.dionsegijn.konfetti.models.Size;
 public class GameActivity extends AppCompatActivity implements Scoreboard.ScoreboardListener {
     private static final String TAG = "GameActivity";
 
-    WordList words;
     WordList.Difficulty difficulty;
     CountDownTimer timer;
     Scoreboard scoreboard;
@@ -56,17 +57,25 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
         hideStatusBar();
         getColors();
 
-        // get word list from intent and set it up
-        Intent intent = getIntent();
-        words = intent.getParcelableExtra(MainActivity.WORD_LIST);
-        difficulty = (WordList.Difficulty) intent.getSerializableExtra(MainActivity.GAME_MODE);
-        words.startGame(difficulty);
+        // load word list
+        try {
+            InputStream wordStream = this.getResources().openRawResource(R.raw.biblewords);
+            WordList.init(wordStream);
+        }
+        catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Error finding word list resource.", e);
+            finish(); // TODO: is this necessary? is there a better way?
+        }
 
-        // set up scoreboard and sounds
+        // set up word list
+        Intent intent = getIntent();
+        difficulty = (WordList.Difficulty) intent.getSerializableExtra(MainActivity.GAME_MODE);
+        if (difficulty == null) difficulty = WordList.Difficulty.EASY;
+        WordList.startGame(difficulty);
+
+        // set up scoreboard, sounds, and timer
         scoreboard = new Scoreboard(this, Config.getPointsToWin());
         GameSounds.init(this);
-
-        // set up timer
         timerSetup();
     }
 
@@ -152,7 +161,7 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
 
     public void buttonStart(View view) {
         GameSounds.button();
-        String word = words.getWord();
+        String word = WordList.getWord();
         wordView.setText(word);
 
         // hide start button; show timer, correct button, and skip button
@@ -165,7 +174,7 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
     public void buttonCorrect(View view) {
         GameSounds.correct();
         scoreboard.addPoint();
-        String word = words.getWord();
+        String word = WordList.getWord();
         wordView.setText(word);
     }
 
@@ -183,14 +192,13 @@ public class GameActivity extends AppCompatActivity implements Scoreboard.Scoreb
 
     public void buttonSkip(View view) {
         GameSounds.button();
-        String word = words.getWord();
+        String word = WordList.getWord();
         wordView.setText(word);
     }
 
     public void buttonNew(View view) {
         GameSounds.button();
         scoreboard.reset();
-        words.startGame(difficulty);
         showStartScreen();
     }
 

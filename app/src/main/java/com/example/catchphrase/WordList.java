@@ -13,24 +13,30 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-class WordList implements Parcelable {
+class WordList {
     private static final String TAG = "WordList";
 
-    private List<String> easy;
-    private List<String> medium;
-    private List<String> hard;
-    private List<String> current;
+    static private WordList instance;
+
+    static private List<String> easy;
+    static private List<String> medium;
+    static private List<String> hard;
+    static private List<String> adventist;
+    static private List<String> current;
+    static private List<String> current_used;
 
     public enum Difficulty {
         EASY,
         MEDIUM,
-        HARD
+        HARD,
+        ADVENTIST
     }
 
-    WordList(InputStream filestream) { // TODO: error handle filename input any more than you already are?
+    private WordList(InputStream filestream) { // TODO: error handle filename input any more than you already are?
         easy = new ArrayList<>();
         medium = new ArrayList<>();
         hard = new ArrayList<>();
+        adventist = new ArrayList<>();
         current = easy; // default to easy mode
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(filestream))) {
@@ -50,6 +56,10 @@ class WordList implements Parcelable {
                         hard.add(tokens[0]);
                         break;
                     }
+                    case "a": {
+                        adventist.add(tokens[0]);
+                        break;
+                    }
                 }
             }
         }
@@ -59,35 +69,30 @@ class WordList implements Parcelable {
         }
     }
 
-    private WordList(Parcel in) {
-        // get sizes of word lists
-        int easySize = in.readInt();
-        int mediumSize = in.readInt();
-        int hardSize = in.readInt();
-
-        // initialize word lists
-        easy = new ArrayList<>(easySize);
-        medium = new ArrayList<>(mediumSize);
-        hard = new ArrayList<>(hardSize);
-
-        // fill word lists
-        in.readStringList(easy);
-        in.readStringList(medium);
-        in.readStringList(hard);
+    static void init(InputStream filestream) {
+        if (instance == null) instance = new WordList(filestream);
     }
 
-    void startGame(Difficulty difficulty) {
+    static void startGame(Difficulty difficulty) {
         switch(difficulty) {
             case EASY: {
                 current = new ArrayList<>(easy);
+                current_used = new ArrayList<>(easy.size());
                 break;
             }
             case MEDIUM: {
                 current = new ArrayList<>(medium);
+                current_used = new ArrayList<>(medium.size());
                 break;
             }
             case HARD: {
                 current = new ArrayList<>(hard);
+                current_used = new ArrayList<>(hard.size());
+                break;
+            }
+            case ADVENTIST: {
+                current = new ArrayList<>(adventist);
+                current_used = new ArrayList<>(adventist.size());
                 break;
             }
         }
@@ -95,47 +100,28 @@ class WordList implements Parcelable {
         Collections.shuffle(current);
     }
 
-    String getWord() {
+    static String getWord() {
         String word;
+
+        // if out of words, refill and reshuffle
+        if (current.size() == 0) {
+            Log.d(TAG, "Ran out of words! Starting list over.");
+            List<String> current_temp = current;
+            current = current_used;
+            current_used = current_temp;
+            Collections.shuffle(current);
+        }
+
+        // pull word from list
         try {
             word = current.remove(0);
+            current_used.add(word);
         }
         catch (IndexOutOfBoundsException e) {
-            Log.e(TAG, "Ran out of words!", e);
-            // TODO: handle this. what happens when we run out of words?
-            word = "NO MORE WORDS";
+            Log.e(TAG, "Tried to access word that was out of bounds.", e);
+            word = " ";
         }
 
         return word;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        try {
-            parcel.writeInt(easy.size());
-            parcel.writeInt(medium.size());
-            parcel.writeInt(hard.size());
-            parcel.writeStringList(easy);
-            parcel.writeStringList(medium);
-            parcel.writeStringList(hard);
-        }
-        catch (NullPointerException e) {
-            Log.d(TAG, "Tried to parcel an object with null list.", e);
-        }
-    }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public WordList createFromParcel(Parcel in) {
-            return new WordList(in);
-        }
-
-        public WordList[] newArray(int size) {
-            return new WordList[size];
-        }
-    };
 }

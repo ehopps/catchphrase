@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String GAME_MODE = "com.example.catchphrase.GAME_MODE";
 
     View decorView;
-    WordList words;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,15 +28,6 @@ public class MainActivity extends AppCompatActivity {
         // initialize app settings and sounds
         GameSounds.init(this);
         Config.init();
-
-        // load word list
-        try {
-            InputStream wordStream = this.getResources().openRawResource(R.raw.biblewords);
-            words = new WordList(wordStream); // TODO: find a better way to do this?
-        }
-        catch (Resources.NotFoundException e) {
-            Log.e(TAG, "Error finding word list resource.", e);
-        }
     }
 
     private void hideStatusBar() {
@@ -78,9 +68,13 @@ public class MainActivity extends AppCompatActivity {
         startGameActivity(WordList.Difficulty.HARD);
     }
 
+    public void startAdventist(View view) {
+        GameSounds.button();
+        startGameActivity(WordList.Difficulty.ADVENTIST);
+    }
+
     private void startGameActivity(WordList.Difficulty difficulty) {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(WORD_LIST, words);
         intent.putExtra(GAME_MODE, difficulty);
         startActivity(intent);
     }
@@ -99,5 +93,4 @@ public class MainActivity extends AppCompatActivity {
 
 // TODO: add support for different lists of words (sports, movies, etc.)
 // TODO: fix toast styling (dark mode?)
-// TODO: add Settings icon in one top corner and About icon in the other
 // TODO: when About is pressed, display info including attribution of sounds, etc.
