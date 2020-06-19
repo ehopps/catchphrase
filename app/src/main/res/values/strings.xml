@@ -11,6 +11,7 @@
     <string name="string_easy">Easy</string>
     <string name="string_medium">Medium</string>
     <string name="string_hard">Hard</string>
+    <string name="string_adventist">Adventist</string>
     <string name="string_team1">Team 1</string>
     <string name="string_team2">Team 2</string>
     <string name="title_activity_settings">Settings</string>
@@ -29,4 +30,7 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

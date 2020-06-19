@@ -84,4 +84,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/info" />
 
+    <fragment android:name="com.example.android.fragments.HeadlinesFragment"
+        android:id="@+id/headlines_fragment"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

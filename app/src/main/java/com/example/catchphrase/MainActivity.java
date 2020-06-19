@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String GAME_MODE = "com.example.catchphrase.GAME_MODE";
 
     View decorView;
+    int aboutCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         // initialize app settings and sounds
         GameSounds.init(this);
         Config.init();
+        aboutCount = 0;
     }
 
     private void hideStatusBar() {
@@ -44,11 +46,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void about(View view) {
+        GameSounds.button();
+
         // TODO: add functionality
+
+        aboutCount++;
+        if (aboutCount >= 7) {
+            startGameActivity(WordList.Difficulty.ADVENTIST);
+            aboutCount = 0;
+        }
+
         Log.d(TAG, "Clicked About button.");
     }
 
     public void settings(View view) {
+        GameSounds.button();
         // TODO: add functionality
         Log.d(TAG, "Clicked Settings button.");
     }
@@ -66,11 +78,6 @@ public class MainActivity extends AppCompatActivity {
     public void startHard(View view) {
         GameSounds.button();
         startGameActivity(WordList.Difficulty.HARD);
-    }
-
-    public void startAdventist(View view) {
-        GameSounds.button();
-        startGameActivity(WordList.Difficulty.ADVENTIST);
     }
 
     private void startGameActivity(WordList.Difficulty difficulty) {
